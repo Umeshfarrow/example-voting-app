@@ -7,7 +7,7 @@ pipeline {
             bat '''
             echo 'Build Project'
             cd worker
-            mvn install
+            mvn clean install
             '''
          }
       }
