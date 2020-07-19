@@ -1,0 +1,24 @@
+redis:
+    image: redis
+db:
+    image: postgres:9.4
+    envirnment:
+      - POSTGRES_HOST_AUTH_METHOD=trust
+vote:
+    image: umeshfarrow/vote-app
+    ports:
+       - 5000:80
+    links:
+       - redis:redis
+result:
+    image: umeshfarrow/result-app
+    ports:
+       - 5001:80
+    links:
+       - redis:redis
+       - db:db
+worker:
+    image: umeshfarrow/worker-app
+    links:
+       - redis:redis
+       - db:db
