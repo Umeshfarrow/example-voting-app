@@ -44,7 +44,7 @@ pipeline {
         stage('AWS Connection and Deployment'){
             steps{
             bat '''
-            ssh ubuntu@35.175.128.139
+            ssh -tt ubuntu@35.175.128.139
             groot
             cd /home/ubuntu
             sudo su
