@@ -8,6 +8,10 @@ pipeline {
          }
       }
       stage('Build Project') {
+         tools{
+            jdk 'jdk_1.8'
+            maven 'apache-maven-3.6.3'
+         }
          steps {
             bat '''
             echo 'Build Project'
