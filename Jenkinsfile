@@ -43,7 +43,7 @@ pipeline {
          }
      }
         stage('AWS Connection and Deployment'){
-            steps{
+           /*steps{
            bat '''
             ssh -tt ubuntu@35.175.128.139 << EOF
             groot
@@ -56,6 +56,9 @@ pipeline {
             exit
             EOF
             '''
+            }*/
+            script{
+                execCommand: "echo hello world"
             }
         }
       
