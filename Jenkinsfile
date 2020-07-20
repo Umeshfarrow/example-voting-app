@@ -4,13 +4,7 @@ pipeline {
         maven 'maven' 
         jdk 'jdk1.8' 
     }
-    stages {
-        def remote=[:]
-        remote.name = 'AWSDeploy'
-        remote.host = '35.175.128.139'
-        remote.user = 'ubuntu'
-        remote.password = 'groot'
-        
+    stages {        
       stage('SCM') {
          steps {
             git 'https://github.com/Umeshfarrow/example-voting-app.git'
@@ -47,10 +41,17 @@ pipeline {
              }
          }
      }
-        stage('AWS Connection'){
-            sshCommand remote: remote, command: "cd /home/ubuntu"
-            sshCommand remote: remote, command: "sudo su"
-            sshCommand remote: remote, command: "docker-compose.yml up -d"
+        stage('AWS Connection and Deployment'){
+            bat '''
+            ssh ubuntu@35.175.128.139
+            groot
+            cd /home/ubuntu
+            sudo su
+            docker stop vote worker result db redis
+            docker rm vote worker result db redis
+            docker rmi umeshfarrow/worker-app umeshfarrow/result-app umeshfarrow/vote-app redis postgres
+            docker-compose up -d
+            '''
         }
       
         
