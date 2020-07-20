@@ -5,6 +5,12 @@ pipeline {
         jdk 'jdk1.8' 
     }
     stages {
+        def remote=[:]
+        remote.name = 'AWSDeploy'
+        remote.host = '35.175.128.139'
+        remote.user = 'ubuntu'
+        remote.password = 'groot'
+        
       stage('SCM') {
          steps {
             git 'https://github.com/Umeshfarrow/example-voting-app.git'
@@ -41,9 +47,17 @@ pipeline {
              }
          }
      }
+        stage('AWS Connection'){
+            sshCommand remote: remote, command: "cd /home/ubuntu"
+            sshCommand remote: remote, command: "sudo su"
+            sshCommand remote: remote, command: "docker-compose.yml up -d"
+        }
+      
+        
+   /*     
       stage('Install docker'){
          steps{
-            bat '''
+            sshCommand remote: remote, command: '''
             echo "Install Docker"
             sudo apt-get remove docker docker-engine docker.io containerd runc
             curl -fsSL https://get.docker.com -o get-docker.sh
@@ -53,19 +67,19 @@ pipeline {
       }
       stage('Switch User'){
          steps{
-            sh '''
+            sshCommand remote: remote, command: '''
             echo "Get in to Sudo"
             sudo su
             '''
          }
       }
-      stage('Clone repository'){
+     stage('Clone repository'){
          steps{
             sh '''
             git clone https://github.com/Umeshfarrow/example-voting-app.git
             '''
          }
-      }
+      } 
       stage('Build Docker image'){
          steps{
          sh '''
@@ -104,7 +118,7 @@ pipeline {
          '''
          }
       }
-   }
+   } */
    post {
         always {
             //archiveArtifacts artifacts: 'generatedFile.log', onlyIfSuccessful: true
