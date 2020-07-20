@@ -42,6 +42,7 @@ pipeline {
          }
      }
         stage('AWS Connection and Deployment'){
+            steps{
             bat '''
             ssh ubuntu@35.175.128.139
             groot
@@ -52,6 +53,7 @@ pipeline {
             docker rmi umeshfarrow/worker-app umeshfarrow/result-app umeshfarrow/vote-app redis postgres
             docker-compose up -d
             '''
+            }
         }
       
         
