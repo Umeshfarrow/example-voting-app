@@ -1,12 +1,5 @@
 pipeline {
     agent any
-    
-    def remote = [:]
-    remote.name = 'ubuntu'
-    remote.host = '54.173.227.243'
-    remote.user = 'ubuntu'
-    remote.password = 'groot'
-    remote.allowAnyHosts = true
 
     tools { 
         maven 'maven' 
@@ -61,7 +54,15 @@ pipeline {
             docker rmi umeshfarrow/worker-app umeshfarrow/result-app umeshfarrow/vote-app redis postgres
             docker-compose up -d
             ''' */
-                sshCommand remote: remote, command: "sudo su; cd /home/ubuntu; docker stop vote worker result db redis; docker rm vote worker result db redis; docker rmi umeshfarrow/worker-app umeshfarrow/result-app umeshfarrow/vote-app redis postgres; docker-compose up -d"
+                    
+            def remote = [:]
+            remote.name = 'ubuntu'
+            remote.host = '54.173.227.243'
+            remote.user = 'ubuntu'
+            remote.password = 'groot'
+            remote.allowAnyHosts = true
+
+            sshCommand remote: remote, command: "sudo su; cd /home/ubuntu; docker stop vote worker result db redis; docker rm vote worker result db redis; docker rmi umeshfarrow/worker-app umeshfarrow/result-app umeshfarrow/vote-app redis postgres; docker-compose up -d"
             }
         }
       
