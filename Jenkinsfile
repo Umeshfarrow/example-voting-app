@@ -117,8 +117,8 @@ pipeline {
          docker run -d --name=worker --link redis:redis --link db:db prabhavagrawal/worker-app
          '''
          }
-      }
-   } */
+      }*/
+   } 
    post {
         always {
             //archiveArtifacts artifacts: 'generatedFile.log', onlyIfSuccessful: true
