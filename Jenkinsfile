@@ -44,8 +44,8 @@ pipeline {
      }
         stage('AWS Connection and Deployment'){
            steps{
-           /*bat '''
-            ssh -tt ubuntu@35.175.128.139 << EOF
+           bat '''
+            ssh -tt ubuntu@35.175.128.139 
             groot
             cd /home/ubuntu
             sudo su
@@ -56,11 +56,7 @@ pipeline {
             exit
             EOF
             '''
-            }*/
-            script{
-                execCommand: "echo hello world"
             }
-           }
         }
       
         
