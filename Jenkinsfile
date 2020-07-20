@@ -4,15 +4,16 @@ pipeline {
         maven 'maven' 
         jdk 'jdk1.8' 
    }
-     stage ('Initialize') {
+   
+   stages {
+      stage ('Initialize') {
       steps {
           bat '''
               echo "PATH = ${PATH}"
               echo "M2_HOME = ${M2_HOME}"
           ''' 
+         }
       }
-   }
-   stages {
       stage('SCM') {
          steps {
             git 'https://github.com/Umeshfarrow/example-voting-app.git'
