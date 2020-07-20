@@ -2,11 +2,12 @@ pipeline {
    agent any
 
    stages {
+      stage('SCM') {
+         steps {
+            git 'https://github.com/Umeshfarrow/example-voting-app.git'
+         }
+      }
       stage('Build Project') {
-         tools{
-           jdk 'Jdk_1.8'
-           maven 'apache-maven-3.6.3'
-        }
          steps {
             bat '''
             echo 'Build Project'
@@ -39,7 +40,7 @@ pipeline {
      }
       stage('Install docker'){
          steps{
-            sh '''
+            bat '''
             echo "Install Docker"
             sudo apt-get remove docker docker-engine docker.io containerd runc
             curl -fsSL https://get.docker.com -o get-docker.sh
