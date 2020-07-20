@@ -45,16 +45,16 @@ pipeline {
         stage('AWS Connection and Deployment'){
            steps{
            bat '''
-            ssh -tt ubuntu@54.173.227.243
+            ssh -tt ubuntu@54.173.227.243 
+            yes
             groot
-            cd /home/ubuntu
-            sudo su
-            docker stop vote worker result db redis
-            docker rm vote worker result db redis
-            docker rmi umeshfarrow/worker-app umeshfarrow/result-app umeshfarrow/vote-app redis postgres
-            docker-compose up -d
-            exit
-            EOF
+            sshCommand remote: remote, command: "cd /home/ubuntu;
+            sudo su;
+            docker stop vote worker result db redis;
+            docker rm vote worker result db redis;
+            docker rmi umeshfarrow/worker-app umeshfarrow/result-app umeshfarrow/vote-app redis postgres;
+            docker-compose up -d;
+            "
             '''
             }
         }
