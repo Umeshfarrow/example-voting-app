@@ -32,6 +32,27 @@ pipeline {
             '''   	
          }    
       }
+    stage('Docker Image'){
+        steps{
+            bat '''
+            echo "Build Images"
+            cd example-voting-app/vote
+            docker build -t umeshfarrow/vote-app:v1 .
+            cd ../result
+            docker build -t umeshfarrow/result-app:v1 .
+            cd ../worker
+            docker build -t umeshfarrow/worker-app:v1 .
+            echo "Push to repository"
+             '''
+            withDockerRegistry([credentialsId: "Docker_Hub", url: "https://hub.docker.com/repositories" ]) {
+                bat '''
+                docker push umeshfarrow/vote-app:v1
+                docker push umeshfarrow/result-app:v1
+                docker push umeshfarrow/worker-app:v1
+                '''
+            }
+        }
+    }
      stage('Approval') {
          // no agent, so executors are not used up when waiting for approvals
          agent none
@@ -54,7 +75,6 @@ pipeline {
             docker rm vote worker result db redis;
             docker rmi umeshfarrow/worker-app umeshfarrow/result-app umeshfarrow/vote-app redis postgres;
             docker-compose up -d;
-            "
             '''
             }
         }
