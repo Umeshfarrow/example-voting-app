@@ -48,7 +48,8 @@ pipeline {
            }
     }
     stage('Push Images to repository'){
-        withCredentials([string(credentialsId: 'Docker_Hub', variable: 'dockerPassword')]) {
+        steps{
+            withCredentials([string(credentialsId: 'Docker_Hub', variable: 'dockerPassword')]) {
             bat 'docker login -u umeshfarrow -p ${dockerPassword}'
             }
             sh '''
@@ -56,6 +57,7 @@ pipeline {
             docker push umeshfarrow/result-app
             docker push umeshfarrow/worker-app
             '''
+        }
     }
      stage('Approval') {
          // no agent, so executors are not used up when waiting for approvals
