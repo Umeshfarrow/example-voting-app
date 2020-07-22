@@ -52,12 +52,12 @@ pipeline {
             withCredentials([string(credentialsId: 'Docker_Hub', variable: 'dockerPassword')]) {
             sh '''
             docker login -tt -u umeshfarrow --password-stdin ${dockerPassword}
-            sudo su
             echo "Push to repository"
             sudo docker push umeshfarrow/vote-app
             sudo docker push umeshfarrow/result-app
             sudo docker push umeshfarrow/worker-app
             '''
+            }
         }
     }
      stage('Approval') {
