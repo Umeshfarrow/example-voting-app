@@ -45,7 +45,7 @@ pipeline {
             echo "Push to repository"
              '''
             withCredentials([string(credentialsId: 'Docker_repository', variable: 'DockerPassword')]) {
-                bat 'docker login -u umeshfarrow --password-stdin $(DockerPassword) docker.io'
+                bat 'docker login -u umeshfarrow --password-stdin $(DockerPassword)'
             }
             bat '''
             docker push umeshfarrow/vote-app:${BUILD_NUMBER}
