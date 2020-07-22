@@ -13,7 +13,7 @@ pipeline {
       }
       stage('Build Project') {
          steps {
-            bat '''
+            sh '''
             echo 'Build Project'
             cd worker
             mvn clean install
@@ -23,7 +23,7 @@ pipeline {
       }
       stage('SonarQube') { 
          steps { 
-            bat ''' 
+            sh ''' 
             cd worker 
             mvn sonar:sonar \
            -Dsonar.projectKey=Vote-app-key \
@@ -34,7 +34,7 @@ pipeline {
       }
     stage('Docker Image'){
         steps{
-            bat '''
+            sh '''
             echo "Build Images"
             cd vote
             docker build -t umeshfarrow/vote-app .
@@ -44,11 +44,10 @@ pipeline {
             docker build -t umeshfarrow/worker-app .
             echo "Push to repository"
              '''
-            withCredentials([string(credentialsId: 'Docker_repository', variable: 'DockerPassword')]) {
-                //bat 'docker login -u umeshfarrow --password-stdin $(DockerPassword)'
+            withCredentials([string(credentialsId: 'Docker_Hub', variable: 'dockerPassword')]) {
+                bat 'docker login -u umeshfarrow --password-stdin $(dockerPassword)'
             }
-            bat '''
-            docker login
+            sh '''
             docker push umeshfarrow/vote-app
             docker push umeshfarrow/result-app
             docker push umeshfarrow/worker-app
@@ -66,11 +65,10 @@ pipeline {
          }
      }
         stage('AWS Connection and Deployment'){
-           steps{
-               
-               sshagent(['AWS EC2']) {
-                   bat '''
-                   ssh -o StrictHostKeyChecking=no ubuntu@52.3.249.19
+               withCredentials([sshUserPrivateKey(credentialsId: 'AWS_EC2', keyFileVariable: '', passphraseVariable: 'sshPassword', usernameVariable: 'sshUsername')]) {
+                   sh '''
+                   ssh -o StrictHostKeyChecking=no ${sshUsername}@52.3.249.19
+                   ${sshPassword}
                    docker stop vote worker result db redis
                    docker rm vote worker result db redis
                    docker rmi umeshfarrow/worker-app umeshfarrow/result-app umeshfarrow/vote-app
