@@ -76,7 +76,7 @@ pipeline {
                    sshagent(['AWS_EC2']) {
                    sh '''
                    ssh -o StrictHostKeyChecking=no ubuntu@52.3.249.19       
-                   docker stop vote worker result db redis || docker rm vote worker result db redis || docker rmi umeshfarrow/worker-app umeshfarrow/result-app umeshfarrow/vote-app || docker-compose up -d
+                   sudo docker stop vote worker result db redis || sudo docker rm vote worker result db redis || sudo docker rmi umeshfarrow/worker-app umeshfarrow/result-app umeshfarrow/vote-app || sudo docker-compose up -d
                    '''
                }
           /* bat '''
