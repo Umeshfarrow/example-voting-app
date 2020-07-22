@@ -55,6 +55,8 @@ pipeline {
             sudo docker push umeshfarrow/vote-app
             sudo docker push umeshfarrow/result-app
             sudo docker push umeshfarrow/worker-app
+            sudo usermod -a -G docker ubuntu
+            sudo usermod -a -G docker root
             '''
             }
         }
