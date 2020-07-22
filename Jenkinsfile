@@ -1,7 +1,6 @@
 pipeline {
     agent any
-    def version = BUILD_NUMBER
-
+    
     tools { 
         maven 'maven' 
         jdk 'jdk1.8' 
@@ -38,20 +37,20 @@ pipeline {
             bat '''
             echo "Build Images"
             cd example-voting-app/vote
-            docker build -t umeshfarrow/vote-app:${version} .
+            docker build -t umeshfarrow/vote-app:${BUILD_NUMBER} .
             cd ../result
-            docker build -t umeshfarrow/result-app:${version} .
+            docker build -t umeshfarrow/result-app:${BUILD_NUMBER} .
             cd ../worker
-            docker build -t umeshfarrow/worker-app:${version} .
+            docker build -t umeshfarrow/worker-app:${BUILD_NUMBER} .
             echo "Push to repository"
              '''
             withCredentials([string(credentialsId: 'Docker_repository', variable: 'DockerPassword')]) {
                 bat 'docker login -u umeshfarrow -p $(DockerPassword) docker.io'
             }
             bat '''
-            docker push umeshfarrow/vote-app:${version}
-            docker push umeshfarrow/result-app:${version}
-            docker push umeshfarrow/worker-app:${version}
+            docker push umeshfarrow/vote-app:${BUILD_NUMBER}
+            docker push umeshfarrow/result-app:${BUILD_NUMBER}
+            docker push umeshfarrow/worker-app:${BUILD_NUMBER}
             '''
         }
     }
