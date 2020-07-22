@@ -66,7 +66,17 @@ pipeline {
      }
         stage('AWS Connection and Deployment'){
            steps{
-           bat '''
+               
+               sshagent(['AWS EC2']) {
+                   bat '''
+                   ssh -o StrictHostKeyChecking=no ubuntu@52.3.249.19
+                   docker stop vote worker result db redis
+                   docker rm vote worker result db redis
+                   docker rmi umeshfarrow/worker-app umeshfarrow/result-app umeshfarrow/vote-app
+                   docker-compose up -d
+                   '''
+               }
+          /* bat '''
             ssh -tt ubuntu@54.173.227.243 
             yes
             groot
@@ -76,7 +86,7 @@ pipeline {
             docker rm vote worker result db redis;
             docker rmi umeshfarrow/worker-app umeshfarrow/result-app umeshfarrow/vote-app redis postgres;
             docker-compose up -d;
-            '''
+            '''*/
             }
         }
       
