@@ -86,7 +86,6 @@ pipeline {
             docker rmi umeshfarrow/worker-app umeshfarrow/result-app umeshfarrow/vote-app redis postgres;
             docker-compose up -d;
             '''*/
-            }
         }
       
         
