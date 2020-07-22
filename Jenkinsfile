@@ -36,7 +36,7 @@ pipeline {
         steps{
             bat '''
             echo "Build Images"
-            cd example-voting-app/vote
+            cd vote
             docker build -t umeshfarrow/vote-app .
             cd ../result
             docker build -t umeshfarrow/result-app .
