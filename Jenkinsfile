@@ -37,20 +37,20 @@ pipeline {
             bat '''
             echo "Build Images"
             cd example-voting-app/vote
-            docker build -t umeshfarrow/vote-app:${BUILD_NUMBER} .
+            docker build -t umeshfarrow/vote-app .
             cd ../result
-            docker build -t umeshfarrow/result-app:${BUILD_NUMBER} .
+            docker build -t umeshfarrow/result-app .
             cd ../worker
-            docker build -t umeshfarrow/worker-app:${BUILD_NUMBER} .
+            docker build -t umeshfarrow/worker-app .
             echo "Push to repository"
              '''
             withCredentials([string(credentialsId: 'Docker_repository', variable: 'DockerPassword')]) {
                 bat 'docker login -u umeshfarrow --password-stdin $(DockerPassword)'
             }
             bat '''
-            docker push umeshfarrow/vote-app:${BUILD_NUMBER}
-            docker push umeshfarrow/result-app:${BUILD_NUMBER}
-            docker push umeshfarrow/worker-app:${BUILD_NUMBER}
+            docker push umeshfarrow/vote-app
+            docker push umeshfarrow/result-app
+            docker push umeshfarrow/worker-app
             '''
         }
     }
