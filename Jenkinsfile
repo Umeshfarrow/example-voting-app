@@ -1,5 +1,6 @@
 pipeline {
     agent any
+    def version = BUILD_NUMBER
 
     tools { 
         maven 'maven' 
@@ -37,20 +38,21 @@ pipeline {
             bat '''
             echo "Build Images"
             cd example-voting-app/vote
-            docker build -t umeshfarrow/vote-app:v1 .
+            docker build -t umeshfarrow/vote-app:${version} .
             cd ../result
-            docker build -t umeshfarrow/result-app:v1 .
+            docker build -t umeshfarrow/result-app:${version} .
             cd ../worker
-            docker build -t umeshfarrow/worker-app:v1 .
+            docker build -t umeshfarrow/worker-app:${version} .
             echo "Push to repository"
              '''
-            withDockerRegistry([credentialsId: "Docker_Hub", url: "https://hub.docker.com/repositories" ]) {
-                bat '''
-                docker push umeshfarrow/vote-app:v1
-                docker push umeshfarrow/result-app:v1
-                docker push umeshfarrow/worker-app:v1
-                '''
+            withCredentials([string(credentialsId: 'Docker_repository', variable: 'DockerPassword')]) {
+                bat "docker login -u umeshfarrow -p $(DockerPassword) docker.io "
             }
+            bat '''
+            docker push umeshfarrow/vote-app:${version}
+            docker push umeshfarrow/result-app:${version}
+            docker push umeshfarrow/worker-app:${version}
+            '''
         }
     }
      stage('Approval') {
