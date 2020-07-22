@@ -36,6 +36,7 @@ pipeline {
     stage('Docker Image'){
         steps{
             sh '''
+            sudo su
             echo "Build Images"
             cd vote
             docker build -t umeshfarrow/vote-app .
@@ -52,6 +53,7 @@ pipeline {
             sh 'docker login -u umeshfarrow -p ${dockerPassword}'
             }
             sh '''
+            sudo su
             echo "Push to repository"
             docker push umeshfarrow/vote-app
             docker push umeshfarrow/result-app
