@@ -21,6 +21,7 @@ pipeline {
             '''
          }
       }
+        /*
       stage('SonarQube') { 
          steps { 
             sh ''' 
@@ -31,7 +32,7 @@ pipeline {
            -Dsonar.login=fb245133d74b4674c6c63b892b07c9fe6eba83b9
             '''   	
          }    
-      }
+      } */
     stage('Docker Image'){
         steps{
             sh '''
