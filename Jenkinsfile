@@ -71,10 +71,11 @@ pipeline {
      }
         stage('AWS Connection and Deployment'){
             steps{
-               withCredentials([sshUserPrivateKey(credentialsId: 'AWS_EC2', keyFileVariable: '', passphraseVariable: 'sshPassword', usernameVariable: 'sshUsername')]) {
+                   sshagent(['AWS_EC2']) {
                    sh '''
-                   ssh -o StrictHostKeyChecking=no ${sshUsername}@52.3.249.19
-                   ${sshPassword}
+                   ssh -o StrictHostKeyChecking=no ubuntu@52.3.249.19
+                   '''
+                   sh '''            
                    docker stop vote worker result db redis
                    docker rm vote worker result db redis
                    docker rmi umeshfarrow/worker-app umeshfarrow/result-app umeshfarrow/vote-app
