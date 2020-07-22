@@ -39,11 +39,11 @@ pipeline {
             sudo su
             echo "Build Images"
             cd vote
-            docker build -t umeshfarrow/vote-app .
+            sudo docker build -t umeshfarrow/vote-app .
             cd ../result
-            docker build -t umeshfarrow/result-app .
+            sudo docker build -t umeshfarrow/result-app .
             cd ../worker
-            docker build -t umeshfarrow/worker-app .
+            sudo docker build -t umeshfarrow/worker-app .
              '''
            }
     }
@@ -55,9 +55,9 @@ pipeline {
             sh '''
             sudo su
             echo "Push to repository"
-            docker push umeshfarrow/vote-app
-            docker push umeshfarrow/result-app
-            docker push umeshfarrow/worker-app
+            sudo docker push umeshfarrow/vote-app
+            sudo docker push umeshfarrow/result-app
+            sudo docker push umeshfarrow/worker-app
             '''
         }
     }
