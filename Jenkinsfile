@@ -50,9 +50,8 @@ pipeline {
     stage('Push Images to repository'){
         steps{
             withCredentials([string(credentialsId: 'Docker_Hub', variable: 'dockerPassword')]) {
-            sh 'docker login -u umeshfarrow --password-stdin ${dockerPassword}'
-            }
             sh '''
+            docker login -tt -u umeshfarrow --password-stdin ${dockerPassword}
             sudo su
             echo "Push to repository"
             sudo docker push umeshfarrow/vote-app
