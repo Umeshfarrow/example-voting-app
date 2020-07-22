@@ -50,7 +50,7 @@ pipeline {
     stage('Push Images to repository'){
         steps{
             withCredentials([string(credentialsId: 'Docker_Hub', variable: 'dockerPassword')]) {
-            sh 'docker login -u umeshfarrow -p ${dockerPassword}'
+            sh 'docker login -u umeshfarrow --password-stdin ${dockerPassword}'
             }
             sh '''
             sudo su
