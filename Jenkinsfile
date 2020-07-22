@@ -43,16 +43,16 @@ pipeline {
             docker build -t umeshfarrow/result-app .
             cd ../worker
             docker build -t umeshfarrow/worker-app .
-            echo "Push to repository"
              '''
            }
     }
     stage('Push Images to repository'){
         steps{
             withCredentials([string(credentialsId: 'Docker_Hub', variable: 'dockerPassword')]) {
-            bat 'docker login -u umeshfarrow -p ${dockerPassword}'
+            sh 'docker login -u umeshfarrow -p ${dockerPassword}'
             }
             sh '''
+            echo "Push to repository"
             docker push umeshfarrow/vote-app
             docker push umeshfarrow/result-app
             docker push umeshfarrow/worker-app
