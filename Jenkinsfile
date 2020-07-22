@@ -65,6 +65,7 @@ pipeline {
          }
      }
         stage('AWS Connection and Deployment'){
+            steps{
                withCredentials([sshUserPrivateKey(credentialsId: 'AWS_EC2', keyFileVariable: '', passphraseVariable: 'sshPassword', usernameVariable: 'sshUsername')]) {
                    sh '''
                    ssh -o StrictHostKeyChecking=no ${sshUsername}@52.3.249.19
@@ -86,8 +87,8 @@ pipeline {
             docker rmi umeshfarrow/worker-app umeshfarrow/result-app umeshfarrow/vote-app redis postgres;
             docker-compose up -d;
             '''*/
+              }
         }
-      
         
    /*     
       stage('Install docker'){
