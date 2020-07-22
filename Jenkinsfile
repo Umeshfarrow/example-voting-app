@@ -45,9 +45,10 @@ pipeline {
             echo "Push to repository"
              '''
             withCredentials([string(credentialsId: 'Docker_repository', variable: 'DockerPassword')]) {
-                bat 'winpty docker login -u umeshfarrow --password-stdin $(DockerPassword)'
+                //bat 'docker login -u umeshfarrow --password-stdin $(DockerPassword)'
             }
             bat '''
+            docker login
             docker push umeshfarrow/vote-app
             docker push umeshfarrow/result-app
             docker push umeshfarrow/worker-app
