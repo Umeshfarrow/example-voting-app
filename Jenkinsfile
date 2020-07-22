@@ -51,7 +51,7 @@ pipeline {
         steps{
             withCredentials([string(credentialsId: 'Docker_Hub', variable: 'dockerPassword')]) {
             sh '''
-            sudo docker login -u umeshfarrow
+            sudo docker login -u umeshfarrow --password-stdin ${dockerPassword}
             echo ${dockerPassword}
             echo "Push to repository"
             sudo docker push umeshfarrow/vote-app
